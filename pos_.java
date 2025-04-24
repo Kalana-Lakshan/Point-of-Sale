@@ -23,6 +23,7 @@ class Item{
 
 class pos{
     static HashMap<String,Item> data = new HashMap<>();
+    
      static void readfile(String filename) throws IOException{
         FileReader fr = new FileReader(filename);
         BufferedReader br = new BufferedReader(fr);
@@ -46,13 +47,16 @@ class pos{
         item_bill = bill.item_bill;
         bw.write(bill.cashier_name+"\n");
         bw.write(bill.customer_name+"\n");
+        
         for (List<Object> bill_item:item_bill){
             Item item = (Item) bill_item.get(0);
             double discount = (double) bill_item.get(1);
             double net_price = (double) bill_item.get(2);
-
+           
             bw.write(item.item_code+" "+item.item_name+" "+Double.toString(discount)+" "+ Double.toString(net_price)+"\n");
     }
+    bw.write(Double.toString(bill.total_discount)+"\n");
+    bw.write(Double.toString(bill.final_net_price)+"\n");
     bw.close();
 }
 }
@@ -60,7 +64,7 @@ class pos{
 class Bill{
     String cashier_name;
     String customer_name;
-    double unit_price ,gross_price,discount,net_price;
+    double unit_price ,gross_price,discount,net_price,total_discount,final_net_price;
     List<List<Object>> item_bill = new ArrayList<>();
     
     //Double Discount;
@@ -91,9 +95,12 @@ class Bill{
             Item item = (Item) bill_item.get(0);
             double discount = (double) bill_item.get(1);
             double net_price = (double) bill_item.get(2);
-
-            System.out.println(item.item_name+" has given a "+discount+" discount. Net price is "+net_price);
+            total_discount += discount;
+            final_net_price += net_price;
+            System.out.println(item.item_name+" has been given a "+discount+" discount. Net price is "+net_price);
         }
+        System.out.println("Total discount: "+total_discount);
+        System.out.println("Total net price: "+final_net_price);
     }
 
     
