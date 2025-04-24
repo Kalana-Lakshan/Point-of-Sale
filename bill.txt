@@ -1,0 +1,5 @@
+aa
+bb
+I001 Milk Powder 95.0 855.0
+I002 Rice 18.0 342.0
+I004 Soap 68.0 272.0
