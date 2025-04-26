@@ -1,11 +1,17 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.*;
 
-class Item{
+class Item implements Serializable{
+
     String item_code;
     String item_name;
     double unit_price;
@@ -21,7 +27,7 @@ class Item{
 
 }
 
-class pos{
+class pos implements Serializable{
     static HashMap<String,Item> data = new HashMap<>();
     
      static void readfile(String filename) throws IOException{
@@ -59,9 +65,25 @@ class pos{
     bw.write(Double.toString(bill.final_net_price)+"\n");
     bw.close();
 }
+    static void serialize(Bill bill) throws IOException{
+        FileOutputStream fout_s = new FileOutputStream("pending_bill.ser");
+        ObjectOutputStream objout = new ObjectOutputStream(fout_s);
+        objout.writeObject(bill);
+        objout.close();
+        
+    }
+
+    static Bill deserialize() throws IOException, ClassNotFoundException{
+        FileInputStream fin_s = new FileInputStream("pending_bill.ser");
+        ObjectInputStream objin = new ObjectInputStream(fin_s);
+        Object bill1 = objin.readObject();
+        Bill bill2 = (Bill) bill1;
+        objin.close();
+        return bill2;
+    }
 }
 
-class Bill{
+class Bill implements Serializable{
     String cashier_name;
     String customer_name;
     double unit_price ,gross_price,discount,net_price,total_discount,final_net_price;
@@ -105,8 +127,9 @@ class Bill{
 
     
 }
-public class pos_{
-    public static void main(String args[]) throws IOException{
+public class pos_ implements Serializable{
+    public static void main(String args[]) throws IOException, ClassNotFoundException{
+        
         System.out.println("\n");
         System.out.print("Enter Cashier name: ");
         Scanner scanner1 = new Scanner(System.in);
@@ -115,8 +138,19 @@ public class pos_{
         Scanner scanner2 = new Scanner(System.in);
         String customer_name = scanner2.nextLine();
         //System.out.println(customer_name);
+        System.out.println("Select one: ");
+        System.out.println("1.New bill");
+        System.out.println("2.Pending bill");
+        Scanner scanner5 = new Scanner(System.in);
+        String selection = scanner5.nextLine();
         pos.readfile("super_saving_items.csv");
-        Bill bill = new Bill(cashier_name,customer_name);
+        Bill bill = null;
+        if (selection.equals("1")){
+            bill = new Bill(cashier_name,customer_name);
+        }
+        else if (selection.equals("2")){
+            bill = pos.deserialize();
+        }
         while(true){
             try{
             System.out.print("Enter the item code: ");
@@ -125,6 +159,13 @@ public class pos_{
             //System.out.println(item_code);
             if (item_code == ""){
                 break;
+            }
+            else if (item_code.equals("save")){
+                pos.serialize(bill);
+                pos_.main(args);
+                System.out.println("\n"+"resume pending bill");
+                continue;
+                
             }
             if (!pos.data.containsKey(item_code)){
                 System.out.println("Item not found");
@@ -147,5 +188,6 @@ public class pos_{
         }
         bill.printbill();
         pos.savebill(bill);
+    
     }
 }

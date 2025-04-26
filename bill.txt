@@ -1,16 +1,33 @@
+cc
+dd
+I003 Toothpaste 103.725 587.775
+I004 Soap 68.0 272.0
+171.725
+859.775
 aa
 bb
 I001 Milk Powder 95.0 855.0
 I002 Rice 18.0 342.0
-I004 Soap 68.0 272.0
+I006 Biscuits 1680.0 12320.0
+1793.0
+13517.0
+qq
+ww
+I002 Rice 18.0 342.0
+18.0
+342.0
 aa
-gg
+bb
 I001 Milk Powder 95.0 855.0
-I003 Toothpaste 69.15 391.85
-164.151246.85aa
-aa
-I003 Toothpaste 34.575 195.925
-I001 Milk Powder 95.0 855.0
-I010 Wheat Flour 190.0 1710.0
-319.575
-2760.925
+95.0
+855.0
+rr
+tt
+I002 Rice 18.0 342.0
+18.0
+342.0
+zz
+zz
+I009 Tea Pack 129.6 590.4
+129.6
+590.4
