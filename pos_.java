@@ -129,28 +129,33 @@ class Bill implements Serializable{
 }
 public class pos_ implements Serializable{
     public static void main(String args[]) throws IOException, ClassNotFoundException{
-        
+        while(true){
         System.out.println("\n");
+        System.out.println("Select one: ");
+        System.out.println("1.New bill");
+        System.out.println("2.Pending bill");
+        Scanner scanner5 = new Scanner(System.in);
+        String selection = scanner5.nextLine();
+
+        Bill bill = null;
+        if (selection.equals("1")){
         System.out.print("Enter Cashier name: ");
         Scanner scanner1 = new Scanner(System.in);
         String cashier_name = scanner1.nextLine();
         System.out.print("Enter customer name: ");
         Scanner scanner2 = new Scanner(System.in);
         String customer_name = scanner2.nextLine();
-        //System.out.println(customer_name);
-        System.out.println("Select one: ");
-        System.out.println("1.New bill");
-        System.out.println("2.Pending bill");
-        Scanner scanner5 = new Scanner(System.in);
-        String selection = scanner5.nextLine();
-        pos.readfile("super_saving_items.csv");
-        Bill bill = null;
-        if (selection.equals("1")){
-            bill = new Bill(cashier_name,customer_name);
+        bill = new Bill(cashier_name,customer_name);
         }
         else if (selection.equals("2")){
             bill = pos.deserialize();
         }
+        
+        //System.out.println(customer_name);
+        
+        pos.readfile("super_saving_items.csv");
+        boolean wantsave = true;
+        
         while(true){
             try{
             System.out.print("Enter the item code: ");
@@ -162,9 +167,11 @@ public class pos_ implements Serializable{
             }
             else if (item_code.equals("save")){
                 pos.serialize(bill);
-                pos_.main(args);
-                System.out.println("\n"+"resume pending bill");
-                continue;
+                wantsave = false;
+                break;
+                //pos_.main(args);
+                //System.out.println("\n"+"resume pending bill");
+                //continue;
                 
             }
             if (!pos.data.containsKey(item_code)){
@@ -186,8 +193,14 @@ public class pos_ implements Serializable{
            
 
         }
-        bill.printbill();
-        pos.savebill(bill);
-    
+        if (wantsave){
+            bill.printbill();
+            pos.savebill(bill);
+            }
+            //else if (selection.equals("2")){
+                
+            //1}        
+        
+        }
     }
 }
