@@ -29,6 +29,8 @@ class Item implements Serializable{
 
 class pos implements Serializable{
     static HashMap<String,Item> data = new HashMap<>();
+    static double final_total_discount = 0;
+    static double final_total_value = 0;
     
      static void readfile(String filename) throws IOException{
         FileReader fr = new FileReader(filename);
@@ -65,6 +67,11 @@ class pos implements Serializable{
     bw.write(Double.toString(bill.final_net_price)+"\n");
     bw.close();
 }
+
+    //static void generaterevenue(Bill bill){
+        
+    //}
+
     static void serialize(Bill bill) throws IOException{
         FileOutputStream fout_s = new FileOutputStream("pending_bill.ser");
         ObjectOutputStream objout = new ObjectOutputStream(fout_s);
@@ -134,8 +141,14 @@ public class pos_ implements Serializable{
         System.out.println("Select one: ");
         System.out.println("1.New bill");
         System.out.println("2.Pending bill");
+        System.out.println("3.Generate revenue report");
         Scanner scanner5 = new Scanner(System.in);
         String selection = scanner5.nextLine();
+        if (selection.equals("3")){
+            System.out.println("Total discount: "+pos.final_total_discount);
+            System.out.println("Total_price: "+pos.final_total_value);
+            continue;
+        }
 
         Bill bill = null;
         if (selection.equals("1")){
@@ -196,6 +209,8 @@ public class pos_ implements Serializable{
         if (wantsave){
             bill.printbill();
             pos.savebill(bill);
+            pos.final_total_discount += bill.total_discount;
+            pos.final_total_value += bill.final_net_price;
             }
             //else if (selection.equals("2")){
                 
